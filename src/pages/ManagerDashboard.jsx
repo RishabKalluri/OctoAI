@@ -18,6 +18,7 @@ import Card from '../components/Card'
 import Avatar from '../components/Avatar'
 import AiBadge from '../components/AiBadge'
 import StatusPill from '../components/StatusPill'
+import DeveloperProfile from '../components/DeveloperProfile'
 
 const teamMembers = [
   {
@@ -101,7 +102,7 @@ const activityLevels = {
   low: { label: 'Low', color: 'bg-octo-gray-300' },
 }
 
-function TeamMemberCard({ member, index }) {
+function TeamMemberCard({ member, index, onClick }) {
   const activity = activityLevels[member.activityToday]
   const hasIssues = member.blockers > 0 || member.staleTickets > 0
 
@@ -110,6 +111,7 @@ function TeamMemberCard({ member, index }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
+      onClick={onClick}
     >
       <Card hover className="p-4">
         <div className="flex items-start gap-3">
@@ -156,9 +158,9 @@ function TeamMemberCard({ member, index }) {
 
         <div className="mt-3 pt-3 border-t border-octo-gray-100 flex items-center justify-between">
           <span className="text-[11px] text-octo-gray-400">Last active {member.lastActive}</span>
-          <button className="text-xs text-octo-purple-600 hover:text-octo-purple-700 font-medium">
-            View details
-          </button>
+          <span className="text-xs text-octo-purple-600 hover:text-octo-purple-700 font-medium">
+            View details →
+          </span>
         </div>
       </Card>
     </motion.div>
@@ -168,6 +170,13 @@ function TeamMemberCard({ member, index }) {
 export default function ManagerDashboard() {
   const [timeRange, setTimeRange] = useState('today')
   const [selectedTeam, setSelectedTeam] = useState('engineering')
+  const [selectedDeveloper, setSelectedDeveloper] = useState(null)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
+
+  const handleDeveloperClick = (member) => {
+    setSelectedDeveloper(member)
+    setIsProfileOpen(true)
+  }
 
   return (
     <div className="min-h-full">
@@ -241,7 +250,12 @@ export default function ManagerDashboard() {
 
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.map((member, i) => (
-                <TeamMemberCard key={member.id} member={member} index={i} />
+                <TeamMemberCard 
+                  key={member.id} 
+                  member={member} 
+                  index={i}
+                  onClick={() => handleDeveloperClick(member)}
+                />
               ))}
             </div>
           </div>
@@ -316,7 +330,13 @@ export default function ManagerDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Developer Profile Panel */}
+      <DeveloperProfile
+        developer={selectedDeveloper}
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
     </div>
   )
 }
-

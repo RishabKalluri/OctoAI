@@ -8,6 +8,7 @@ import {
   Sparkles,
   CheckSquare
 } from 'lucide-react'
+import OctoChat from './OctoChat'
 
 const navigation = [
   { name: 'My Work', href: '/my-work', icon: LayoutDashboard },
@@ -120,7 +121,9 @@ export default function Layout() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Floating Octo Chat */}
+      <OctoChat />
     </div>
   )
 }
-

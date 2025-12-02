@@ -41,3 +41,4 @@ export default function Avatar({ name, src, size = 'md', className = '' }) {
   )
 }
 
+
